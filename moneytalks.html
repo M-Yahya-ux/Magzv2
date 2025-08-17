@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Money Talks - The Finstinct Times</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Page CSS -->
+  <link rel="stylesheet" href="css/moneytalks.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/index.html">The Finstinct Times</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/the-fine-print.html">The Fine Print</a></li>
+        <li class="nav-item"><a class="nav-link" href="/econo-muse.html">EconoMuse</a></li>
+        <li class="nav-item"><a class="nav-link" href="/capital-chic.html">Capital Chic</a></li>
+        <li class="nav-item"><a class="nav-link" href="/finstinct-floor.html">The Finstinct Floor</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/moneytalks.html">Money Talks</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<header class="hero-money-talks d-flex align-items-center">
+  <div class="container text-center hero-overlay">
+    <h1 class="display-4 fw-bold">Money Talks</h1>
+    <p class="lead">Gen Z reflects on how money, power, and systems affect their lives. First-person stories, social commentary, and money diaries.</p>
+  </div>
+</header>
+
+<!-- Issues Grid -->
+<section class="container my-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Latest Issues</h2>
+    <p class="text-white">Published twice a month, featuring Gen Z voices and perspectives</p>
+  </div>
+  <div class="row g-4" id="issuesGrid">
+    <!-- Issue cards injected by JS -->
+  </div>
+</section>
+
+<!-- Modal for Issue Details -->
+<div class="modal fade" id="issueModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="modalTitle" class="modal-title"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Panel Modal -->
+<div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content admin-panel">
+      <div class="modal-header">
+        <h5 class="modal-title">Admin Panel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="adminForm">
+          <input type="hidden" id="editIndex">
+          <div class="mb-3">
+            <label for="blogTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="blogTitle" required>
+          </div>
+          <div class="mb-3">
+            <label for="blogExcerpt" class="form-label">Excerpt</label>
+            <textarea class="form-control" id="blogExcerpt" rows="2" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="blogContent" class="form-label">Content</label>
+            <textarea class="form-control" id="blogContent" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        <hr>
+        <h6>Existing Blogs</h6>
+        <ul class="list-group" id="blogList"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-light py-4 mt-5 text-center">
+  <p class="mb-0">&copy; 2025 The Finstinct Times. All rights reserved.</p>
+  <small class="text-white">Instinct Led, Youth Fueled | <a href="#" data-bs-toggle="modal" data-bs-target="#adminModal">Admin Panel</a></small>
+</footer>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Scripts -->
+<script>
+const issuesGrid = document.getElementById('issuesGrid');
+const issueModal = new bootstrap.Modal(document.getElementById('issueModal'));
+const modalTitle = document.getElementById('modalTitle');
+const modalBody = document.getElementById('modalBody');
+
+// Admin Elements
+const adminForm = document.getElementById('adminForm');
+const blogTitle = document.getElementById('blogTitle');
+const blogExcerpt = document.getElementById('blogExcerpt');
+const blogContent = document.getElementById('blogContent');
+const editIndex = document.getElementById('editIndex');
+const blogList = document.getElementById('blogList');
+
+// Preload sample issues
+let issues = JSON.parse(localStorage.getItem('moneyTalksIssues')) || [
+  {title:"The Student Debt Trap", excerpt:"Gen Z shares personal stories of student loans.", content:"Full article content about student debt."},
+  {title:"The Gig Economy Diaries", excerpt:"Side hustles and modern work.", content:"Full article content about gig economy."},
+  {title:"Crypto, NFTs & You", excerpt:"Young investors weigh in on digital assets.", content:"Full article content about crypto and NFTs."}
+];
+
+// ===== Render Issues =====
+function renderIssues() {
+  issuesGrid.innerHTML = '';
+  issues.forEach((issue, i) => {
+    const col = document.createElement('div');
+    col.className = 'col-md-4';
+    col.innerHTML = `
+      <div class="card h-100 shadow-sm issue-card">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title text-white">${issue.title}</h5>
+          <p class="card-text text-white">${issue.excerpt}</p>
+          <button class="btn btn-primary mt-auto" onclick="openIssue(${i})">Read More</button>
+        </div>
+      </div>
+    `;
+    issuesGrid.appendChild(col);
+  });
+}
+
+// ===== Open Modal =====
+function openIssue(index){
+  modalTitle.innerText = issues[index].title;
+  modalBody.innerText = issues[index].content;
+  issueModal.show();
+}
+
+// ===== Admin Functions =====
+function renderAdminList() {
+  blogList.innerHTML = '';
+  issues.forEach((issue,i)=>{
+    const li = document.createElement('li');
+    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+    li.innerHTML = `
+      ${issue.title}
+      <span>
+        <button class="btn btn-sm btn-secondary me-1" onclick="editBlog(${i})">Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteBlog(${i})">Delete</button>
+      </span>
+    `;
+    blogList.appendChild(li);
+  });
+}
+
+function saveToStorage() {
+  localStorage.setItem('moneyTalksIssues', JSON.stringify(issues));
+  renderIssues();
+  renderAdminList();
+}
+
+// ===== Add/Edit Blog =====
+adminForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const blogData = {
+    title: blogTitle.value,
+    excerpt: blogExcerpt.value,
+    content: blogContent.value
+  };
+  if(editIndex.value) {
+    issues[editIndex.value] = blogData;
+    editIndex.value = '';
+  } else {
+    issues.push(blogData);
+  }
+  adminForm.reset();
+  saveToStorage();
+});
+
+function editBlog(index){
+  blogTitle.value = issues[index].title;
+  blogExcerpt.value = issues[index].excerpt;
+  blogContent.value = issues[index].content;
+  editIndex.value = index;
+}
+
+function deleteBlog(index){
+  if(confirm('Are you sure you want to delete this blog?')){
+    issues.splice(index,1);
+    saveToStorage();
+  }
+}
+
+// Initialize
+renderIssues();
+renderAdminList();
+</script>
+
+</body>
+</html>

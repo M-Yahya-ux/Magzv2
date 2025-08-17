@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EconoMuse - The Finstinct Times</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/econo-muse.css">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">The Finstinct Times</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/the-fine-print.html">The Fine Print</a></li>
+          <li class="nav-item"><a class="nav-link" href="/econo-muse.html">EconoMuse</a></li>
+          <li class="nav-item"><a class="nav-link" href="/capital-chic.html">Capital Chic</a></li>
+          <li class="nav-item"><a class="nav-link" href="/finstint-floor.html">The Finstinct Floor</a></li>
+          <li class="nav-item"><a class="nav-link" href="/moneytalks.html">Money Talks</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-econo">
+    <div class="container text-center">
+      <h1 class="display-4 fw-bold">EconoMuse</h1>
+      <p class="lead">Where art, history & literature meet business</p>
+    </div>
+  </header>
+
+  <!-- Gallery Section -->
+  <section class="container my-5">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">Featured Gallery</h2>
+      <p class="text-muted">Creative visuals on money, power, and systems</p>
+    </div>
+    <div class="row g-4" id="econo-gallery">
+      <!-- Dynamic cards will load here -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-light py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2025 The Finstinct Times. All rights reserved.</p>
+      <small class="text-white">Instinct Led, Youth Fueled</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    async function loadEconoMuseImages() {
+      const API_KEY = "YOUR_PEXELS_API_KEY"; // 🔑 Replace with your Pexels API key
+      const res = await fetch(`https://api.pexels.com/v1/search?query=fintech+infographic&per_page=8`, {
+        headers: { Authorization: API_KEY }
+      });
+      const data = await res.json();
+      const gallery = document.getElementById('econo-gallery');
+      data.photos.forEach(photo => {
+        const col = document.createElement('div');
+        col.className = 'col-md-6 col-lg-3';
+        col.innerHTML = `
+          <div class="card econo-card h-100">
+            <img src="${photo.src.large}" class="card-img-top" alt="${photo.alt}">
+          </div>`;
+        gallery.appendChild(col);
+      });
+    }
+    loadEconoMuseImages();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+/* General */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #111;
+    color: #fff;
+    margin: 0;
+  }
+  
+  /* Navbar */
+  .custom-navbar {
+    background: #111 !important;
+    padding: 1rem 0;
+  }
+  .navbar-brand { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #fff; }
+  .nav-link { color: #ccc !important; margin-left: 1rem; position: relative; font-weight: 300; transition: 0.3s; }
+  .nav-link:hover { color: #fff !important; }
+  .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; left: 0; bottom: -5px; background-color: #ff3131; transition: width 0.3s; }
+  .nav-link:hover::after { width: 100%; }
+  
+  /* Hero */
+  .hero-money-talks {
+    height: 60vh;
+    background-image: url('/images/Untitled\ design\ -\ 2025-08-17T172223.020.png');
+    background-position: center;
+    background-size: cover;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+  }
+  .hero-overlay { background: rgba(0,0,0,0.5); padding: 30px; border-radius: 12px; }
+  .hero-money-talks h1 { font-weight: 700; font-size: 3rem; color: #fff; }
+  .hero-money-talks p { font-size: 1.2rem; color: #fff; }
+  
+  /* Cards */
+  .issue-card { border-radius: 12px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; background: #1a1a1a; }
+  .issue-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(255,49,49,0.2); }
+  .card-title { font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem; color: #fff; }
+  .card-text { font-size: 0.95rem; color: #ccc; }
+  
+  /* Buttons */
+  .btn-primary { background-color: #ff3131; border: none; transition: background 0.3s, transform 0.2s; }
+  .btn-primary:hover { background-color: #e03b3b; transform: translateY(-2px); }
+  
+  /* Modal */
+  .modal-content { border-radius: 12px; padding: 20px; font-size: 1rem; }
+  .modal-title { font-weight: 700; font-size: 1.5rem; }
+  
+  /* Admin Panel Styling */
+  .admin-panel .modal-content { background-color: #fff; color: #000; }
+  .admin-panel .form-label { color: #000; }
+  .admin-panel .btn { color: #fff; }
+  
+  /* Footer */
+  footer { background-color: #111; color: #aaa; font-size: 0.9rem; }
+  footer a { color: #ff3131; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-money-talks h1 { font-size: 2.2rem; }
+    .hero-money-talks p { font-size: 1rem; }
+  }
+  

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Capital Chic - The Finstinct Times</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Site-wide styles (if you have them) + page styles -->
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/capital-chic.css">
+</head>
+<body>
+
+ <!-- Navbar -->
+ <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">The Finstinct Times</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/the-fine-print.html">The Fine Print</a></li>
+          <li class="nav-item"><a class="nav-link" href="/econo-muse.html">EconoMuse</a></li>
+          <li class="nav-item"><a class="nav-link" href="/capital-chic.html">Capital Chic</a></li>
+          <li class="nav-item"><a class="nav-link" href="/finstint-floor.html">The Finstinct Floor</a></li>
+          <li class="nav-item"><a class="nav-link" href="/moneytalks.html">Money Talks</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero-capital text-white d-flex align-items-center">
+    <div class="container text-center">
+      <h1 class="display-4 fw-bold">Capital Chic</h1>
+      <p class="lead">Vogue meets Finance — decoding trends, consumerism & youth branding</p>
+    </div>
+  </header>
+
+  <!-- Blogs -->
+  <section class="container my-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Trending Features</h2>
+      <p class="text-muted">A digital zine on hype cycles, pricing psychology & cultural capital</p>
+    </div>
+
+    <div class="row g-4" id="chic-grid"><!-- cards injected by JS --></div>
+  </section>
+
+  <!-- Modal (one modal, dynamic content) -->
+  <div class="modal fade" id="chicModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modalTitle" class="modal-title"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="modalBody" class="mb-0"></p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button id="prevBtn" type="button" class="btn btn-outline-secondary">&larr; Previous</button>
+          <button id="nextBtn" type="button" class="btn btn-dark">Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer (consistent) -->
+  <footer class="bg-dark text-light py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">&copy; 2025 The Finstinct Times. All rights reserved.</p>
+      <small class="text-white">Instinct Led, Youth Fueled</small>
+    </div>
+  </footer>
+
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Page Script -->
+  <script>
+    // Posts data (image sources include multiple fallbacks)
+    const posts = [
+      {
+        title: "The Business of Jordans",
+        excerpt: "How Nike turned sneakers into a multi-billion dollar cultural empire.",
+        content: `
+          The Air Jordan line didn’t just sell shoes—it minted cultural currency. Limited drops, athlete lore,
+          and resale platforms transformed sneakers into assets. Nike controls scarcity through production runs,
+          building predictable hype cycles that feed both primary and secondary markets.
+          <br><br>
+          The genius is vertical: storytelling (MJ mythology), distribution (SNKRS app), and pricing (tiered releases).
+          Jordans live at the intersection of identity and liquidity—part wardrobe, part stock portfolio.
+        `,
+        images: [
+          "https://images.unsplash.com/photo-1600185365926-3a2ce1c3dbb6?auto=format&fit=crop&w=1400&q=80",
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1400&q=80",
+          "https://picsum.photos/seed/jordans/1400/900"
+        ]
+      },
+      {
+        title: "How Zara Prices Products",
+        excerpt: "Inside the fast-fashion giant’s pricing psychology and supply chain genius.",
+        content: `
+          Zara’s price tags are calibrated to psychological thresholds—just-below pricing (e.g. 29.99) paired with
+          ultra-fast replenishment. The result? Urgency. Customers are trained to “buy now” because restocks are rare.
+          <br><br>
+          With vertical integration and short lead times, Zara tests demand in micro-batches and scales only what sticks.
+          Prices reflect not just cost, but momentum—how quickly a piece can turn on the shop floor and on social feeds.
+        `,
+        images: [
+          "https://images.unsplash.com/photo-1514995428455-447d4443fa7f?auto=format&fit=crop&w=1400&q=80",
+          "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1400&q=80",
+          "https://picsum.photos/seed/zara/1400/900"
+        ]
+      },
+      {
+        title: "Why the “That Girl” TikTok Aesthetic Makes You Spend More",
+        excerpt: "The economics of aesthetic self-branding—water bottles, wellness, and want.",
+        content: `
+          “That Girl” is a monetized mood board. The clean lines—matcha, Pilates, neutral athleisure—hide a
+          consumption engine. To participate is to purchase: the right bottle, the right set, the right morning routine.
+          <br><br>
+          The aesthetic sells progress as a product. Influencer affiliate links and aspirational reels turn wellness
+          into a shopping list. Identity becomes a subscription.
+        `,
+        images: [
+          "https://images.unsplash.com/photo-1604335399102-cd34bbf572f3?auto=format&fit=crop&w=1400&q=80",
+          "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1400&q=80",
+          "https://picsum.photos/seed/thatgirl/1400/900"
+        ]
+      },
+      {
+        title: "Luxury Logos in Gen Z Streetwear",
+        excerpt: "Why designer drops feel more like stock trading than shopping.",
+        content: `
+          Logos are liquidity. Collabs (LV x Supreme) and micro-drops convert scarcity into tradable social capital.
+          Teens arbitrate clout the way traders arbitrate spreads, flipping hoodies like IPO shares.
+          <br><br>
+          The resale market sets a visible price on status. For many, luxury isn’t about craftsmanship—it’s about
+          market value tomorrow. Fashion has a ticker now.
+        `,
+        images: [
+          "https://images.unsplash.com/photo-1618354691438-c8f0d8dfeadc?auto=format&fit=crop&w=1400&q=80",
+          "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1400&q=80",
+          "https://picsum.photos/seed/luxurylogos/1400/900"
+        ]
+      }
+    ];
+
+    // Create a card with robust image fallback
+    function createCard(post, index) {
+      const col = document.createElement('div');
+      col.className = 'col-md-6';
+
+      const card = document.createElement('div');
+      card.className = 'card blog-card h-100';
+
+      const img = document.createElement('img');
+      img.className = 'card-img';
+      img.loading = 'lazy';
+      // Attach fallback chain
+      setImageWithFallback(img, post.images);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'card-img-overlay d-flex flex-column justify-content-end';
+
+      const h3 = document.createElement('h3');
+      h3.className = 'card-title fw-bold';
+      h3.textContent = post.title;
+
+      const p = document.createElement('p');
+      p.className = 'card-text';
+      p.textContent = post.excerpt;
+
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-light btn-sm mt-2';
+      btn.textContent = 'Read More';
+      btn.setAttribute('data-index', index);
+      btn.addEventListener('click', () => openModal(index));
+
+      overlay.appendChild(h3);
+      overlay.appendChild(p);
+      overlay.appendChild(btn);
+
+      card.appendChild(img);
+      card.appendChild(overlay);
+      col.appendChild(card);
+
+      return col;
+    }
+
+    // Fallback loader: tries each URL; if fail, moves to next
+    function setImageWithFallback(imgEl, sources) {
+      let i = 0;
+      const tryNext = () => {
+        if (i >= sources.length) {
+          imgEl.src = 'https://picsum.photos/seed/fallback-capitalchic/1400/900';
+          imgEl.onerror = null;
+          return;
+        }
+        imgEl.src = sources[i++];
+      };
+      imgEl.onerror = tryNext;
+      tryNext();
+    }
+
+    // Render grid
+    const grid = document.getElementById('chic-grid');
+    posts.forEach((post, i) => grid.appendChild(createCard(post, i)));
+
+    // Modal logic
+    let currentIndex = 0;
+    const modalEl = document.getElementById('chicModal');
+    const modal = new bootstrap.Modal(modalEl);
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody  = document.getElementById('modalBody');
+    const prevBtn    = document.getElementById('prevBtn');
+    const nextBtn    = document.getElementById('nextBtn');
+
+    function openModal(index) {
+      currentIndex = index;
+      fillModal(currentIndex);
+      modal.show();
+    }
+
+    function fillModal(i) {
+      const post = posts[i];
+      modalTitle.textContent = post.title;
+      modalBody.innerHTML = post.content;
+      prevBtn.disabled = (i === 0);
+      nextBtn.disabled = (i === posts.length - 1);
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        fillModal(currentIndex);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < posts.length - 1) {
+        currentIndex++;
+        fillModal(currentIndex);
+      }
+    });
+
+    // Keyboard navigation inside modal
+    document.addEventListener('keydown', (e) => {
+      if (!modalEl.classList.contains('show')) return;
+      if (e.key === 'ArrowLeft') prevBtn.click();
+      if (e.key === 'ArrowRight') nextBtn.click();
+    });
+  </script>
+</body>
+</html>

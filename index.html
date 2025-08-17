@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Finstinct Times</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    margin: 0;
+  }
+
+  /* Navbar */
+  .navbar {
+    background: #111;
+    padding: 1rem 0;
+  }
+  .navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: #fff;
+    font-weight: 700;
+  }
+  .nav-link {
+    color: #ccc !important;
+    margin-left: 1rem;
+    position: relative;
+    font-weight: 300;
+    transition: 0.3s;
+  }
+  .nav-link:hover {
+    color: #fff !important;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    left: 0;
+    bottom: -3px;
+    background-color: #ff3131;
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  /* Hero / Header */
+  .hero-index {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(to bottom, #111 0%, #3a668b 100%);
+    color: #fff;
+  }
+  .hero-index h1 { font-size: 4rem; font-weight: 700; margin-bottom: 1rem; }
+  .hero-index p { font-size: 1.5rem; font-weight: 300; }
+
+  /* About Us */
+  .about-us {
+    background: #1a1a1a;
+    padding: 4rem 2rem;
+    border-radius: 12px;
+    margin: 4rem auto;
+    max-width: 900px;
+    text-align: center;
+  }
+  .about-us h2 { font-weight: 700; color: #ff3131; margin-bottom: 1rem; }
+  .about-us p { font-size: 1rem; color: #ccc; margin-bottom: 1rem; line-height: 1.6; }
+
+  /* Section */
+  section { padding: 4rem 0; }
+  section h2 { font-weight: 700; margin-bottom: 1rem; color: #fff; }
+  section p.text-muted { color: #aaa; margin-bottom: 2rem; }
+
+  /* Cards */
+  .modern-card {
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 1.5rem;
+    background: #1a1a1a;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .modern-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(255, 49, 49, 0.2);
+  }
+  .card-type {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ff3131;
+    margin-bottom: 0.5rem;
+  }
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+  .card-text {
+    flex-grow: 1;
+    color: #ccc;
+    font-size: 0.95rem;
+  }
+  .btn-primary {
+    background-color: #ff3131;
+    border: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn-primary:hover {
+    background-color: #e03b3b;
+    transform: translateY(-2px);
+  }
+
+  /* Footer */
+  footer {
+    background: #111;
+    color: #bbb;
+    padding: 2rem 0;
+    text-align: center;
+  }
+
+  /* Responsive */
+  @media (max-width:768px){
+    .hero-index h1 { font-size: 2.5rem; }
+    .hero-index p { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="#">The Finstinct Times</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="the-fine-print.html">The Fine Print</a></li>
+       
+        <li class="nav-item"><a class="nav-link" href="econo-muse.html">EconoMuse</a></li>
+        <li class="nav-item"><a class="nav-link" href="moneytalks.html">Money Talks</a></li>
+        <li class="nav-item"><a class="nav-link" href="capital-chic.html">Capital Chic</a></li>
+        <li class="nav-item"><a class="nav-link" href="finstint-floor.html">The Finstinct Floor</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero-index">
+  <h1>The Finstinct Times</h1>
+  <p>Instinct-led, Youth-fueled insights across finance, culture, and opinion.</p>
+</header>
+
+<!-- About Us -->
+<section class="about-us">
+  <h2>About Us</h2>
+  <p>As its name suggests, It is where Finance Finds Its Feeling.</p>
+  <p>It aims to strive as a youth-focused, student-led organisation digital magazine reimagining the way we understand money, business, and the economy. Built at the intersection of financial instinct and human experience, this isn’t just about markets — it’s about meaning.</p>
+  <p>In an era of chaos and change, in a world that’s shifting faster than ever — where recessions trend on TikTok and interest rates shape our everyday lives — understanding money isn’t optional. It’s essential.</p>
+  <p>We believe that financial knowledge is currency. Which is why our website is free of cost to everyone, as we aim to bridge the gap between privilege and potential, between those who can afford to understand the system — and those who are left to survive it.</p>
+  <p>We blend the analytical with the emotional: from trend-deconstructing fashion columns and debates on capitalism’s future, to vulnerable art galleries exploring financial insecurity, and Gen Z-led op-eds on the price of ambition. We are the voice of like-minded unapologetically ambitious individuals who strive to learn, evolve and discover.</p>
+  <p><strong>Mission Statement:</strong> Instinct-led, Youth-fueled.</p>
+</section>
+
+<!-- Dynamic Sections -->
+<div id="dynamicSections"></div>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 The Finstinct Times. All rights reserved.</p>
+  <small>Instinct-led, Youth-fueled</small>
+</footer>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Fetch live data from localStorage or fallback
+  const finePrint = JSON.parse(localStorage.getItem("fineprintBlogs")) || [
+    { title: "How McDonald’s Dominates Real Estate", category:"Case Study", content:"McDonald’s isn’t just a fast-food chain—it’s a real estate empire..." },
+    { title: "Why I Support UBI", category:"Policy Opinion", content:"Universal Basic Income could provide a social safety net..." }
+  ];
+
+  const moneyTalks = JSON.parse(localStorage.getItem("moneyTalks")) || [
+    { title:"The Gig Economy Diaries", excerpt:"Riding Uber, Fiverr, and side hustles – how Gen Z navigates modern work.", content:"Full article content goes here..." },
+    { title:"Crypto, NFTs & You", excerpt:"Young investors weigh in on risks, hype, and culture.", content:"Full article content goes here..." }
+  ];
+
+  const econoMuse = JSON.parse(localStorage.getItem("econoMuse")) || [
+    { title:"Global Trade Flows Explained", content:"Infographic content..." },
+    { title:"Inflation Visualized", content:"Infographic content..." }
+  ];
+
+  const capitalChic = JSON.parse(localStorage.getItem("capitalChic")) || [
+    { title:"The Business of Jordans", excerpt:"How sneaker culture drives consumerism...", content:"Full article content..." },
+    { title:"Why Zara Prices Products", excerpt:"Decoding fast fashion pricing...", content:"Full article content..." }
+  ];
+
+  const finstinctFloor = JSON.parse(localStorage.getItem("finstinctFloor")) || [
+    { title:"Should Student Debt Be Forgiven?", excerpt:"Discussion on government debt forgiveness.", content:"Full article content..." }
+  ];
+
+  const sections = [
+    { title: "The Fine Print", link: "the-fine-print.html", data: finePrint, typeKey: "category" },
+    { title: "Money Talks", link: "money-talks.html", data: moneyTalks, typeKey: "excerpt" },
+    { title: "EconoMuse", link: "econo-muse.html", data: econoMuse, typeKey: "title" },
+    { title: "Capital Chic", link: "capital-chic.html", data: capitalChic, typeKey: "excerpt" },
+    { title: "The Finstinct Floor", link: "finstint-floor.html", data: finstinctFloor, typeKey: "excerpt" }
+  ];
+
+  const container = document.getElementById("dynamicSections");
+
+  function truncateText(text, max=100){ return text ? (text.length>max ? text.slice(0,max)+"..." : text) : ""; }
+
+  function renderSections(){
+    container.innerHTML = "";
+    sections.forEach(sec=>{
+      if(sec.data.length===0) return;
+      const secDiv = document.createElement("section");
+      secDiv.innerHTML = `
+        <div class="container">
+          <h2>${sec.title}</h2>
+          <p class="text-white">Latest updates from ${sec.title}</p>
+          <div class="row g-4"></div>
+        </div>
+      `;
+      const row = secDiv.querySelector(".row");
+      const items = sec.data.slice(-3).reverse(); // latest 3 items
+      items.forEach(item=>{
+        const col = document.createElement("div");
+        col.className="col-md-4";
+        const type = item[sec.typeKey] ? truncateText(item[sec.typeKey], 25) : sec.title;
+        col.innerHTML=`
+          <div class="modern-card d-flex flex-column">
+            <span class="card-type">${type}</span>
+            <h5 class="card-title">${truncateText(item.title||sec.title,50)}</h5>
+            <p class="card-text">${truncateText(item.content || item.excerpt || "", 120)}</p>
+            <a href="${sec.link}" class="btn btn-primary mt-auto">Read More</a>
+          </div>
+        `;
+        row.appendChild(col);
+      });
+      container.appendChild(secDiv);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", renderSections);
+</script>
+
+</body>
+</html>

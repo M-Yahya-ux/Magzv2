@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Finstinct Floor - The Finstinct Times</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Page-specific CSS -->
+  <link rel="stylesheet" href="css/finstinct-floor.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">The Finstinct Times</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/the-fine-print.html">The Fine Print</a></li>
+        <li class="nav-item"><a class="nav-link" href="/econo-muse.html">EconoMuse</a></li>
+        <li class="nav-item"><a class="nav-link" href="/capital-chic.html">Capital Chic</a></li>
+        <li class="nav-item"><a class="nav-link" href="/finstint-floor.html">The Finstinct Floor</a></li>
+        <li class="nav-item"><a class="nav-link" href="/moneytalks.html">Money Talks</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!-- Hero -->
+<header class="hero-floor text-white d-flex align-items-center" style="padding-top:120px; height:250px; background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;">
+  <div class="container text-center" style="background: rgba(0,0,0,0.4); padding: 30px; border-radius:12px;">
+    <h1 class="display-4 fw-bold">The Finstinct Floor</h1>
+    <p class="lead">Join discussions. Share your thoughts. Best contributions featured in the next issue.</p>
+  </div>
+</header>
+
+<!-- Subscription -->
+<section class="container my-5">
+  <div class="row justify-content-center mb-4">
+    <div class="col-md-6 text-center">
+      <h3 class="fw-bold">Subscribe to Participate</h3>
+      <input type="email" id="subscriberEmail" class="form-control my-2" placeholder="Enter your email">
+      <button id="subscribeBtn" class="btn btn-primary w-100">Subscribe</button>
+      <p id="subscribeMsg" class="mt-2 text-success fw-bold" style="display:none;"></p>
+    </div>
+  </div>
+</section>
+
+<!-- Discussion Topics -->
+<section class="container mb-5">
+  <div class="text-center mb-4">
+    <h3 class="fw-bold">Topics</h3>
+    <p class="text-muted">Click a topic to view and reply</p>
+  </div>
+  <div id="topicsList" class="accordion"></div>
+</section>
+
+<!-- Admin Panel Modal -->
+<div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Admin Panel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label fw-bold">Add Topic</label>
+          <input type="text" id="newTopicInput" class="form-control" placeholder="New topic title">
+          <button class="btn btn-success mt-2" id="addTopicBtn">Add Topic</button>
+        </div>
+        <hr>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Subscribers</label>
+          <ul class="list-group" id="adminSubscribers"></ul>
+        </div>
+        <hr>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Topics & Replies</label>
+          <div id="adminTopicsReplies"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-light py-4 mt-5 text-center">
+  <p class="mb-0">&copy; 2025 The Finstinct Times. All rights reserved.</p>
+  <small class="text-white">Instinct Led, Youth Fueled | <a href="#" id="openAdminBtn" class="text-light">Admin Panel</a></small>
+</footer>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ===== Local Storage Keys =====
+const SUBSCRIBERS_KEY = 'finstinctSubscribers';
+const TOPICS_KEY = 'finstinctTopics';
+const VOTES_KEY = 'finstinctVotes';
+
+// ===== Initial Data =====
+const defaultTopics = [
+  { id:1, title:"Should the government forgive student debt?", replies:[] },
+  { id:2, title:"Is capitalism failing Gen Z?", replies:[] },
+  { id:3, title:"Is crypto a good investment for young adults?", replies:[] }
+];
+
+if(!localStorage.getItem(TOPICS_KEY)) localStorage.setItem(TOPICS_KEY, JSON.stringify(defaultTopics));
+if(!localStorage.getItem(SUBSCRIBERS_KEY)) localStorage.setItem(SUBSCRIBERS_KEY, JSON.stringify([]));
+if(!localStorage.getItem(VOTES_KEY)) localStorage.setItem(VOTES_KEY, JSON.stringify({}));
+
+// ===== DOM Elements =====
+const subscribeBtn = document.getElementById('subscribeBtn');
+const subscriberEmail = document.getElementById('subscriberEmail');
+const subscribeMsg = document.getElementById('subscribeMsg');
+const topicsList = document.getElementById('topicsList');
+
+const openAdminBtn = document.getElementById('openAdminBtn');
+const adminModal = new bootstrap.Modal(document.getElementById('adminModal'));
+const addTopicBtn = document.getElementById('addTopicBtn');
+const newTopicInput = document.getElementById('newTopicInput');
+const adminSubscribers = document.getElementById('adminSubscribers');
+const adminTopicsReplies = document.getElementById('adminTopicsReplies');
+
+// ===== Load Data =====
+let subscribers = JSON.parse(localStorage.getItem(SUBSCRIBERS_KEY));
+let topics = JSON.parse(localStorage.getItem(TOPICS_KEY));
+let votes = JSON.parse(localStorage.getItem(VOTES_KEY));
+
+// ===== Subscribe =====
+subscribeBtn.addEventListener('click',()=>{
+  const email = subscriberEmail.value.trim();
+  if(!email) return alert("Enter a valid email.");
+  if(subscribers.includes(email)){
+    subscribeMsg.style.display='block';
+    subscribeMsg.innerText="You're already subscribed!";
+    return;
+  }
+  subscribers.push(email);
+  localStorage.setItem(SUBSCRIBERS_KEY, JSON.stringify(subscribers));
+  subscribeMsg.style.display='block';
+  subscribeMsg.innerText="Thank you for subscribing!";
+  subscriberEmail.value='';
+  renderTopics();
+});
+
+// ===== Render Topics =====
+function renderTopics(){
+  topicsList.innerHTML='';
+  topics.forEach(topic=>{
+    const item = document.createElement('div');
+    item.className='accordion-item';
+    item.innerHTML = `
+      <h2 class="accordion-header" id="heading${topic.id}">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${topic.id}">
+          ${topic.title}
+        </button>
+      </h2>
+      <div id="collapse${topic.id}" class="accordion-collapse collapse" data-bs-parent="#topicsList">
+        <div class="accordion-body">
+          <div id="replies${topic.id}" class="mb-3"></div>
+          <textarea id="replyInput${topic.id}" class="form-control mb-2" rows="2" placeholder="Write your reply..."></textarea>
+          <button class="btn btn-primary btn-sm w-100" onclick="addReply(${topic.id})">Reply</button>
+        </div>
+      </div>
+    `;
+    topicsList.appendChild(item);
+    renderReplies(topic.id);
+  });
+}
+
+// ===== Render Replies =====
+function renderReplies(topicId){
+  const repliesDiv = document.getElementById('replies'+topicId);
+  const topic = topics.find(t=>t.id===topicId);
+  repliesDiv.innerHTML='';
+  topic.replies.forEach((r,i)=>{
+    const replyEl = document.createElement('div');
+    replyEl.className='card mb-2 p-2';
+    const key = `${topicId}_${i}_${r.email}`;
+    const hasVoted = votes[key]||null;
+    replyEl.innerHTML = `
+      <strong>${r.email} ${r.featured?'<span class="badge bg-warning text-dark">Featured</span>':''}</strong>: ${r.text}
+      <div class="mt-1">
+        <button class="btn btn-sm btn-outline-success me-2" ${hasVoted==='like'?'disabled':''} onclick="vote(${topicId},${i},'like')">👍 ${r.likes||0}</button>
+        <button class="btn btn-sm btn-outline-danger" ${hasVoted==='dislike'?'disabled':''} onclick="vote(${topicId},${i},'dislike')">👎 ${r.dislikes||0}</button>
+        <button class="btn btn-sm btn-danger float-end" onclick="removeReply(${topicId},${i})">Delete</button>
+      </div>
+    `;
+    repliesDiv.appendChild(replyEl);
+  });
+}
+
+// ===== Add Reply =====
+function addReply(topicId){
+  const email = subscribers.length?subscribers[subscribers.length-1]:null;
+  if(!email) return alert("Please subscribe to reply.");
+  const input = document.getElementById('replyInput'+topicId);
+  const text = input.value.trim();
+  if(!text) return;
+  const topic = topics.find(t=>t.id===topicId);
+  topic.replies.push({ email, text, likes:0, dislikes:0, featured:false });
+  localStorage.setItem(TOPICS_KEY, JSON.stringify(topics));
+  input.value='';
+  renderReplies(topicId);
+}
+
+// ===== Voting =====
+function vote(topicId,replyIndex,type){
+  const email = subscribers.length?subscribers[subscribers.length-1]:null;
+  if(!email) return alert("Subscribe to vote.");
+  const key = `${topicId}_${replyIndex}_${email}`;
+  if(votes[key]) return;
+  const topic = topics.find(t=>t.id===topicId);
+  if(type==='like') topic.replies[replyIndex].likes = (topic.replies[replyIndex].likes||0)+1;
+  else topic.replies[replyIndex].dislikes = (topic.replies[replyIndex].dislikes||0)+1;
+  votes[key]=type;
+  localStorage.setItem(TOPICS_KEY, JSON.stringify(topics));
+  localStorage.setItem(VOTES_KEY, JSON.stringify(votes));
+  renderReplies(topicId);
+}
+
+// ===== Remove Reply =====
+function removeReply(topicId,replyIndex){
+  if(!confirm("Remove this reply?")) return;
+  const topic = topics.find(t=>t.id===topicId);
+  topic.replies.splice(replyIndex,1);
+  localStorage.setItem(TOPICS_KEY, JSON.stringify(topics));
+  renderReplies(topicId);
+}
+
+// ===== Admin Modal =====
+openAdminBtn.addEventListener('click',()=>{
+  const password = prompt("Enter admin password:");
+  if(password!=='admin123') return alert("Wrong password.");
+  adminModal.show();
+  renderAdminPanel();
+});
+
+addTopicBtn.addEventListener('click',()=>{
+  const title = newTopicInput.value.trim();
+  if(!title) return;
+  const id = topics.length?topics[topics.length-1].id+1:1;
+  topics.push({ id, title, replies:[] });
+  localStorage.setItem(TOPICS_KEY, JSON.stringify(topics));
+  newTopicInput.value='';
+  renderTopics();
+  renderAdminPanel();
+});
+
+function renderAdminPanel(){
+  // Subscribers
+  adminSubscribers.innerHTML='';
+  subscribers.forEach(s=>{
+    const li = document.createElement('li');
+    li.className='list-group-item d-flex justify-content-between align-items-center';
+    li.innerHTML = `${s} <button class="btn btn-sm btn-danger" onclick="removeSubscriber('${s}')">Remove</button>`;
+    adminSubscribers.appendChild(li);
+  });
+  // Topics & Replies
+  adminTopicsReplies.innerHTML='';
+  topics.forEach((t,tid)=>{
+    const div = document.createElement('div');
+    div.className='mb-3 border p-2 rounded';
+    div.innerHTML = `<strong>${t.title}</strong> <button class="btn btn-sm btn-danger float-end" onclick="removeTopic(${tid})">Remove Topic</button>`;
+    t.replies.forEach((r,rid)=>{
+      const featuredBtnText = r.featured?'Unfeature':'Feature';
+      const replyDiv = document.createElement('div');
+      replyDiv.className='ms-3 my-1 d-flex justify-content-between align-items-center';
+      replyDiv.innerHTML = `${r.email}: ${r.text} <div>
+        <button class="btn btn-sm btn-warning me-1" onclick="toggleFeature(${tid},${rid})">${featuredBtnText}</button>
+        <button class="btn btn-sm btn-danger" onclick="removeReplyAdmin(${tid},${rid})">Delete</button>
+      </div>`;
+      div.appendChild(replyDiv);
+    });
+    adminTopicsReplies.appendChild(div);
+  });
+}
+
+function removeSubscriber(email){
+  subscribers = subscribers.filter(s=>s!==email);
+  localStorage.setItem(SUBSCRIBERS_KEY, JSON.stringify(subscribers));
+  renderAdminPanel();
+}
+
+function removeTopic(tid){
+  topics.splice(tid,1);
+  localStorage.setItem(TOPICS_KEY, JSON.stringify(topics));
+  renderTopics();
+  renderAdminPanel();
+}
+
+function removeReplyAdmin(tid,rid){
+  topics[tid].replies.splice(rid,1);
+  localStorage.setItem(TOPICS_KEY, JSON.stringify(topics));
+  renderTopics();
+  renderAdminPanel();
+}
+
+function toggleFeature(tid,rid){
+  topics[tid].replies[rid].featured = !topics[tid].replies[rid].featured;
+  localStorage.setItem(TOPICS_KEY, JSON.stringify(topics));
+  renderTopics();
+  renderAdminPanel();
+}
+
+// ===== Initial Render =====
+renderTopics();
+</script>
+
+</body>
+</html>

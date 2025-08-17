@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Fine Print | The Finstinct Times</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/the-fine-print.css">
+  <link rel="stylesheet" href="css/index.css">
+  <style>
+    /* Limit preview text */
+    .card-text {
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+
+
+    /* Card hover effect */
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+
+    /* Footer link for admin */
+    footer .admin-link {
+      cursor: pointer;
+      color: #ff3131;
+      text-decoration: underline;
+    }
+    footer .admin-link:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">The Finstinct Times</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/the-fine-print.html">The Fine Print</a></li>
+        <li class="nav-item"><a class="nav-link" href="/econo-muse.html">EconoMuse</a></li>
+        <li class="nav-item"><a class="nav-link" href="/capital-chic.html">Capital Chic</a></li>
+        <li class="nav-item"><a class="nav-link" href="/finstint-floor.html">The Finstinct Floor</a></li>
+        <li class="nav-item"><a class="nav-link" href="/moneytalks.html">Money Talks</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- Hero -->
+  <header class="fineprint-hero">
+    <div class="container">
+      <h1 class="display-4 fw-bold">The Fine Print</h1>
+      <p class="lead">Think pieces, case studies, and bold policy opinions.</p>
+    </div>
+  </header>
+
+  <!-- Blog Cards Section -->
+  <section class="container my-5">
+    <div class="row" id="blogs-container">
+      <!-- Blogs load here dynamically -->
+    </div>
+  </section>
+
+  <!-- Modal for Full Blog -->
+  <div class="modal fade" id="blogModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modalTitle" class="modal-title"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <span id="modalCategory" class="badge bg-dark mb-3"></span>
+          <p id="modalContent"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Modal -->
+  <div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Admin Panel</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="blog-form" class="shadow p-4 rounded bg-light mb-3">
+            <div class="mb-3">
+              <label class="form-label">Blog Title</label>
+              <input type="text" class="form-control" id="blogTitle" required minlength="5" maxlength="100">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Category</label>
+              <select class="form-select" id="blogCategory" required>
+                <option value="">-- Select a Category --</option>
+                <option value="Case Study">Case Study</option>
+                <option value="Policy Opinion">Policy Opinion</option>
+                <option value="Think Piece">Think Piece</option>
+                <option value="Analysis">Analysis</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Content</label>
+              <textarea class="form-control" id="blogContent" rows="6" required minlength="50"></textarea>
+            </div>
+            <button type="submit" class="btn btn-dark">Publish</button>
+          </form>
+          <div id="admin-blogs-container">
+            <!-- Admin delete buttons rendered here dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer text-center py-4 bg-dark text-light">
+    <div class="container">
+      <p class="mb-1">&copy; 2025 The Finstinct Times. All rights reserved.</p>
+      <small class="text-white">Instinct-led, Youth-fueled. <span class="admin-link" id="openAdmin">Admin Panel</span></small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const ADMIN_PASSWORD = "finadmin123";
+    
+    const sampleBlogs = [
+      { title: "How McDonald’s Dominates Real Estate", category: "Case Study", content: "McDonald’s isn’t just a fast-food chain—it’s a real estate empire, owning prime locations worldwide..." },
+      { title: "Why I Support UBI in Pakistan", category: "Policy Opinion", content: "Universal Basic Income could provide a social safety net, reduce inequality, and unlock economic growth..." },
+      { title: "The Rise of Digital Nomads", category: "Think Piece", content: "Young professionals are redefining work-life balance in the age of remote work..." },
+      { title: "Analyzing Social Media Influence on Policy", category: "Analysis", content: "From viral campaigns to public pressure, social media plays a growing role in policy decisions..." }
+    ];
+    
+    function getBlogs() {
+      let blogs = JSON.parse(localStorage.getItem("fineprintBlogs"));
+      if (!blogs) {
+        blogs = sampleBlogs;
+        localStorage.setItem("fineprintBlogs", JSON.stringify(blogs));
+      }
+      return blogs;
+    }
+    
+    function saveBlogs(blogs) {
+      localStorage.setItem("fineprintBlogs", JSON.stringify(blogs));
+    }
+    
+    function renderBlogs() {
+      const container = document.getElementById("blogs-container");
+      container.innerHTML = "";
+      const blogs = getBlogs();
+    
+      blogs.forEach((blog, i) => {
+        const col = document.createElement("div");
+        col.className = "col-md-6 mb-4";
+        col.innerHTML = `
+          <div class="card shadow-sm blog-card border-0">
+            <div class="card-header bg-dark text-light fw-bold">${blog.category}</div>
+            <div class="card-body">
+              <h5 class="card-title">${blog.title}</h5>
+              <p class="card-text">${blog.content}</p>
+              <button class="btn btn-sm btn-outline-primary readmore-btn" data-index="${i}">Read More</button>
+            </div>
+          </div>
+        `;
+        container.prepend(col);
+      });
+    }
+    
+    document.addEventListener("DOMContentLoaded", renderBlogs);
+    
+    // Modal read more
+    document.addEventListener("click", e => {
+      if (e.target.classList.contains("readmore-btn")) {
+        const index = e.target.getAttribute("data-index");
+        const blog = getBlogs()[index];
+        document.getElementById("modalTitle").innerText = blog.title;
+        document.getElementById("modalCategory").innerText = blog.category;
+        document.getElementById("modalContent").innerText = blog.content;
+        new bootstrap.Modal(document.getElementById("blogModal")).show();
+      }
+    });
+    
+    // Admin panel
+    const adminModal = new bootstrap.Modal(document.getElementById("adminModal"));
+    document.getElementById("openAdmin").addEventListener("click", () => {
+      const pwd = prompt("Enter admin password:");
+      if (pwd === ADMIN_PASSWORD) {
+        renderAdminBlogs();
+        adminModal.show();
+      } else alert("Incorrect password!");
+    });
+    
+    document.getElementById("blog-form").addEventListener("submit", function(e){
+      e.preventDefault();
+      const title = document.getElementById("blogTitle").value.trim();
+      const category = document.getElementById("blogCategory").value;
+      const content = document.getElementById("blogContent").value.trim();
+      if (!title || !category || content.length < 50) return alert("Fill all fields correctly");
+    
+      const blogs = getBlogs();
+      blogs.push({ title, category, content });
+    
+      saveBlogs(blogs);
+      renderBlogs();
+      renderAdminBlogs();
+      this.reset();
+    });
+    
+    function renderAdminBlogs() {
+      const container = document.getElementById("admin-blogs-container");
+      const blogs = getBlogs();
+      container.innerHTML = "<h5>Manage Blogs</h5>";
+      blogs.forEach((blog, i) => {
+        const div = document.createElement("div");
+        div.className = "d-flex justify-content-between align-items-center py-2 border-bottom";
+        div.innerHTML = `<span>${blog.title} (${blog.category})</span><button class="btn btn-sm btn-danger" data-index="${i}">Delete</button>`;
+        container.appendChild(div);
+      });
+    }
+    
+    document.getElementById("admin-blogs-container").addEventListener("click", e => {
+      if (e.target.tagName === "BUTTON") {
+        const idx = e.target.getAttribute("data-index");
+        const blogs = getBlogs();
+        blogs.splice(idx, 1);
+        saveBlogs(blogs);
+        renderBlogs();
+        renderAdminBlogs();
+      }
+    });
+    </script>
+</body>
+</html>
