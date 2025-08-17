@@ -241,7 +241,7 @@ function removeReply(topicId,replyIndex){
 // ===== Admin Modal =====
 openAdminBtn.addEventListener('click',()=>{
   const password = prompt("Enter admin password:");
-  if(password!=='admin123') return alert("Wrong password.");
+  if(password!=='finadmin123') return alert("Wrong password.");
   adminModal.show();
   renderAdminPanel();
 });
